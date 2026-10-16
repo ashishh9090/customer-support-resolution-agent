@@ -1,6 +1,6 @@
 import type { AuthToken, DemoUser, SupportTicket, TicketDetail, ApprovalItem, DashboardMetrics, ToolMetric, AuditEventItem } from "../types";
 
-const API_BASE = "http://localhost:8000/api/v1";
+const API_BASE = (import.meta.env.VITE_API_BASE as string) || "/api/v1";
 
 function getAuthHeader(): Record<string, string> {
   const token = localStorage.getItem("support_token");
