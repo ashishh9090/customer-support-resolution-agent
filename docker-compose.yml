@@ -1,0 +1,42 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: support_agent_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: support_user
+      POSTGRES_PASSWORD: support_password
+      POSTGRES_DB: support_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U support_user -d support_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: support_agent_backend
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql+psycopg2://support_user:support_password@postgres:5432/support_db
+      SECRET_KEY: docker-production-secret-key-change-me
+      LLM_PROVIDER: mock
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: >
+      sh -c "alembic -c backend/alembic.ini upgrade head &&
+             python scripts/build_knowledge_index.py &&
+             python scripts/seed_database.py &&
+             uvicorn backend.app.main:app --host 0.0.0.0 --port 8000"
+
+volumes:
+  postgres_data:
