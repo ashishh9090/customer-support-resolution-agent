@@ -53,6 +53,21 @@ export async function fetchTickets(status?: string): Promise<SupportTicket[]> {
   return res.json();
 }
 
+export async function fetchOrders(): Promise<any[]> {
+  const res = await fetch(`${API_BASE}/orders`, { headers: getAuthHeader() });
+  if (!res.ok) throw new Error("Failed to fetch orders");
+  return res.json();
+}
+
+export async function fetchOrder(orderId: string): Promise<any> {
+  const res = await fetch(`${API_BASE}/orders/${orderId}`, { headers: getAuthHeader() });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `Order ${orderId} not found`);
+  }
+  return res.json();
+}
+
 export async function fetchTicketDetail(ticketId: string): Promise<TicketDetail> {
   const res = await fetch(`${API_BASE}/tickets/${ticketId}`, { headers: getAuthHeader() });
   if (!res.ok) throw new Error("Failed to fetch ticket detail");

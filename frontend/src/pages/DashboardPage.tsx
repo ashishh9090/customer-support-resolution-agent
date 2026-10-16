@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import type { DashboardMetrics, SupportTicket } from "../types";
-import { fetchDashboardMetrics, fetchTickets } from "../services/api";
+import { fetchDashboardMetrics, fetchTickets, fetchOrder } from "../services/api";
 import { StatusBadge } from "../components/StatusBadge";
+import { InteractiveOrderCard, type OrderCardData } from "../components/InteractiveOrderCard";
+import { LiveRiderModal } from "../components/LiveRiderModal";
+import { ToastContainer, type ToastMessage } from "../components/Toast";
 import {
   Ticket,
   CheckCircle2,
@@ -18,6 +21,8 @@ import {
   CreditCard,
   PackageOpen,
   HelpCircle,
+  Search,
+  ChevronRight,
 } from "lucide-react";
 
 interface DashboardPageProps {
@@ -33,6 +38,40 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   const [recentTickets, setRecentTickets] = useState<SupportTicket[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Live Order Lookup State
+  const [searchOrderId, setSearchOrderId] = useState("ORD-1001");
+  const [lookedUpOrder, setLookedUpOrder] = useState<OrderCardData | null>(null);
+  const [orderLoading, setOrderLoading] = useState(false);
+  const [orderError, setOrderError] = useState<string | null>(null);
+  const [activeTrackingOrder, setActiveTrackingOrder] = useState<OrderCardData | null>(null);
+  const [toasts, setToasts] = useState<ToastMessage[]>([]);
+
+  const addToast = (message: string, type: "success" | "error" | "info" = "info") => {
+    const id = `toast-${Date.now()}-${Math.random()}`;
+    setToasts((prev) => [...prev, { id, message, type }]);
+    setTimeout(() => {
+      setToasts((prev) => prev.filter((t) => t.id !== id));
+    }, 4000);
+  };
+
+  const handleLookupOrder = async (orderIdToLookup?: string) => {
+    const id = (orderIdToLookup || searchOrderId).trim();
+    if (!id) return;
+    setOrderLoading(true);
+    setOrderError(null);
+    try {
+      const data = await fetchOrder(id);
+      setLookedUpOrder(data);
+      addToast(`Retrieved verified details for ${id}`, "success");
+    } catch (err: any) {
+      setOrderError(err.message || `Order ${id} not found`);
+      setLookedUpOrder(null);
+      addToast(err.message || `Order ${id} not found`, "error");
+    } finally {
+      setOrderLoading(false);
+    }
+  };
+
   useEffect(() => {
     Promise.all([fetchDashboardMetrics(), fetchTickets()])
       .then(([m, t]) => {
@@ -41,6 +80,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       })
       .catch(console.error)
       .finally(() => setLoading(false));
+
+    // Auto-lookup default order ORD-1001 on mount
+    handleLookupOrder("ORD-1001");
   }, []);
 
   const sampleScenarios = [
@@ -89,7 +131,25 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   ];
 
   return (
-    <div className="p-8 space-y-8">
+    <div className="p-8 space-y-8 max-w-7xl mx-auto">
+      {/* Toast Notification Container */}
+      <ToastContainer
+        toasts={toasts}
+        onDismiss={(id) => setToasts((prev) => prev.filter((t) => t.id !== id))}
+      />
+
+      {/* Live Rider Map Modal */}
+      {activeTrackingOrder && (
+        <LiveRiderModal
+          orderNumber={activeTrackingOrder.order_number}
+          carrier={activeTrackingOrder.carrier}
+          trackingNumber={activeTrackingOrder.tracking_number}
+          shippingAddress={activeTrackingOrder.shipping_address}
+          onClose={() => setActiveTrackingOrder(null)}
+          onShowToast={(msg) => addToast(msg, "success")}
+        />
+      )}
+
       {/* Zomato Hero Banner */}
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#E23744] via-[#CB202D] to-[#99111D] p-6 text-white shadow-xl shadow-[#E23744]/25">
         <div className="relative z-10 max-w-2xl space-y-2">
@@ -97,7 +157,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <span className="rounded-full bg-white/20 px-3 py-1 text-xs font-black tracking-wider uppercase backdrop-blur-sm">
               Zomato AI Care Hub
             </span>
-            <span className="text-xs text-white/80 font-medium">Verified Live Backend Operations</span>
+            <span className="text-xs text-white/80 font-medium">Verified Live Operations</span>
           </div>
           <h2 className="text-3xl font-extrabold tracking-tight font-['Outfit']">
             Hungry for help? We've got your back.
@@ -110,6 +170,86 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         <div className="absolute -right-8 -bottom-10 opacity-15 pointer-events-none">
           <UtensilsCrossed className="w-64 h-64 text-white" />
         </div>
+      </div>
+
+      {/* Interactive Instant Order Lookup & Live Radar Widget */}
+      <div className="glass-panel p-6 space-y-4 border-l-4 border-l-[#E23744]">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h3 className="text-base font-bold text-white font-['Outfit'] flex items-center gap-2">
+              <Bike className="h-5 w-5 text-[#E23744]" />
+              Instant Order & Delivery Radar
+            </h3>
+            <p className="text-xs text-slate-400">
+              Select or type any Order ID to inspect live items, tracking, or launch instant refund actions.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <input
+              type="text"
+              value={searchOrderId}
+              onChange={(e) => setSearchOrderId(e.target.value)}
+              placeholder="e.g. ORD-1001"
+              className="rounded-xl border border-slate-700 bg-slate-900/90 px-3 py-1.5 text-xs text-white placeholder-slate-500 font-mono focus:border-[#E23744] focus:outline-none"
+            />
+            <button
+              onClick={() => handleLookupOrder()}
+              disabled={orderLoading}
+              className="btn-primary text-xs py-1.5 px-3"
+            >
+              <Search className="h-3.5 w-3.5" />
+              <span>{orderLoading ? "Fetching..." : "Lookup"}</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Quick Select Buttons */}
+        <div className="flex flex-wrap items-center gap-2 pt-1 border-t border-slate-800">
+          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mr-1">
+            Quick Inquire:
+          </span>
+          {["ORD-1001", "ORD-1002", "ORD-1003", "ORD-1005", "ORD-1006"].map((ordId) => (
+            <button
+              key={ordId}
+              onClick={() => {
+                setSearchOrderId(ordId);
+                handleLookupOrder(ordId);
+              }}
+              className={`rounded-lg px-2.5 py-1 text-[11px] font-mono transition-all ${
+                searchOrderId === ordId
+                  ? "bg-[#E23744] text-white font-bold"
+                  : "bg-slate-800/80 hover:bg-slate-700 text-slate-300"
+              }`}
+            >
+              {ordId}
+            </button>
+          ))}
+        </div>
+
+        {orderError && (
+          <div className="rounded-xl border border-rose-500/40 bg-rose-950/20 p-3 text-xs text-rose-300 flex items-center gap-2">
+            <AlertTriangle className="h-4 w-4 shrink-0 text-rose-400" />
+            <span>{orderError}</span>
+          </div>
+        )}
+
+        {lookedUpOrder && (
+          <InteractiveOrderCard
+            order={lookedUpOrder}
+            onTrackRider={(ord) => setActiveTrackingOrder(ord)}
+            onRequestRefund={(ordNum) =>
+              onNavigateToChatWithPrompt(`I want a refund for order ${ordNum}`)
+            }
+            onReportDamaged={(ordNum) =>
+              onNavigateToChatWithPrompt(`My order ${ordNum} arrived damaged with broken parts!`)
+            }
+            onCopyText={(text) => {
+              navigator.clipboard.writeText(text);
+              addToast(`Copied ${text} to clipboard!`, "success");
+            }}
+          />
+        )}
       </div>
 
       {/* Metrics Row */}

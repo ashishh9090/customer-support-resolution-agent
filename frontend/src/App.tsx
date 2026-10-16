@@ -91,7 +91,18 @@ export function App() {
                 />
               )}
               {activeTab === "chat" && (
-                <ChatPage initialPrompt={initialChatPrompt} />
+                <ChatPage
+                  initialPrompt={initialChatPrompt}
+                  onNavigateToApprovals={() => setActiveTab("approvals")}
+                  onSwitchUser={async (userId) => {
+                    try {
+                      const updated = await switchUser(userId);
+                      setCurrentUser(updated);
+                    } catch (e) {
+                      console.error(e);
+                    }
+                  }}
+                />
               )}
               {activeTab === "tickets" && (
                 <TicketsPage onSelectTicket={handleSelectTicket} />
