@@ -10,8 +10,8 @@ A production-style, stateful AI Customer Support Resolution Agent with **LangGra
 [![Tests](https://img.shields.io/badge/tests-29%20passed-brightgreen.svg)]()
 
 ### Live Public Links
-- **Public Portal**: [https://bwsmp-2409-40d0-1002-ac5c-4cac-a6ff-654e-63b3.run.pinggy-free.link](https://bwsmp-2409-40d0-1002-ac5c-4cac-a6ff-654e-63b3.run.pinggy-free.link)
-- **Named Portal**: [https://cs-resolution-agent.loca.lt](https://cs-resolution-agent.loca.lt) *(Tunnel IP: `152.58.117.241`)*
+- **Interactive Zomato Care Portal**: [https://lkknt-157-49-29-34.run.pinggy-free.link](https://lkknt-157-49-29-34.run.pinggy-free.link)
+- **Direct Mirror**: [https://gsuuk-157-49-29-34.free.pinggy.net](https://gsuuk-157-49-29-34.free.pinggy.net)
 - **GitHub Repository**: [https://github.com/ashishh9090/customer-support-resolution-agent](https://github.com/ashishh9090/customer-support-resolution-agent)
 
 ---
