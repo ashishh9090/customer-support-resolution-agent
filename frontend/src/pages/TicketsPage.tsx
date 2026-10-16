@@ -46,12 +46,12 @@ export const TicketsPage: React.FC<TicketsPageProps> = ({ onSelectTicket }) => {
     <div className="p-8 space-y-6 max-w-6xl mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold text-white flex items-center gap-2">
-            <Ticket className="h-5 w-5 text-indigo-400" />
-            Support Ticket Management
+          <h2 className="text-xl font-bold text-white flex items-center gap-2 font-['Outfit']">
+            <Ticket className="h-5 w-5 text-[#E23744]" />
+            Zomato Orders & Support Complaints
           </h2>
           <p className="text-xs text-slate-400">
-            View, track, and inspect ticket states and resolution outcomes.
+            View, track, and inspect meal deliveries, damaged packaging claims, and refund histories.
           </p>
         </div>
       </div>

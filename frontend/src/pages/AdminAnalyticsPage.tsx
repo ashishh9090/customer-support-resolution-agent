@@ -42,11 +42,11 @@ export const AdminAnalyticsPage: React.FC = () => {
     <div className="p-8 max-w-6xl mx-auto space-y-8">
       <div>
         <div className="flex items-center gap-2">
-          <BarChart3 className="h-5 w-5 text-indigo-400" />
-          <h2 className="text-xl font-bold text-white">Administration & Observability</h2>
+          <BarChart3 className="h-5 w-5 text-[#E23744]" />
+          <h2 className="text-xl font-bold text-white font-['Outfit']">Zomato Partner & Systems Analytics</h2>
         </div>
         <p className="text-xs text-slate-400 mt-1">
-          Tool invocation success rates, audit logs, and security compliance telemetry.
+          Tool invocation success rates, audit logs, and security compliance telemetry for Zomato Care operations.
         </p>
       </div>
 

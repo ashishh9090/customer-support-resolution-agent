@@ -58,14 +58,14 @@ export const ApprovalQueuePage: React.FC = () => {
     <div className="p-8 max-w-6xl mx-auto space-y-6">
       <div>
         <div className="flex items-center gap-2">
-          <CheckSquare className="h-5 w-5 text-amber-400" />
-          <h2 className="text-xl font-bold text-white">Human Approval Operations Center</h2>
-          <span className="rounded-full bg-amber-500/20 px-2 py-0.5 text-[10px] font-bold text-amber-300 border border-amber-500/30">
+          <CheckSquare className="h-5 w-5 text-[#E23744]" />
+          <h2 className="text-xl font-bold text-white font-['Outfit']">Zomato Care | Supervisor Approval Center</h2>
+          <span className="rounded-full bg-[#E23744]/20 px-2 py-0.5 text-[10px] font-bold text-[#FF6B77] border border-[#E23744]/40">
             {pendingList.length} PENDING
           </span>
         </div>
         <p className="text-xs text-slate-400 mt-1">
-          Review high-value refunds (&gt; $50.00), warranty exceptions, and policy overrides.
+          Review high-value refunds (&gt; $50.00), catering adjustments, and policy overrides with full audit accountability.
         </p>
       </div>
 
