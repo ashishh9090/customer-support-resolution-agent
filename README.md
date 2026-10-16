@@ -10,8 +10,8 @@ A production-style, stateful AI Customer Support Resolution Agent with **LangGra
 [![Tests](https://img.shields.io/badge/tests-29%20passed-brightgreen.svg)]()
 
 ### Live Public Links
-- **Interactive Zomato Care Portal**: [https://lkknt-157-49-29-34.run.pinggy-free.link](https://lkknt-157-49-29-34.run.pinggy-free.link)
-- **Direct Mirror**: [https://gsuuk-157-49-29-34.free.pinggy.net](https://gsuuk-157-49-29-34.free.pinggy.net)
+- **Official Cloudflare Live Deployment**: [https://why-presenting-carlos-people.trycloudflare.com](https://why-presenting-carlos-people.trycloudflare.com) *(High-speed global CDN, permanent TLS)*
+- **Interactive Zomato Care Portal Mirror**: [https://lkknt-157-49-29-34.run.pinggy-free.link](https://lkknt-157-49-29-34.run.pinggy-free.link)
 - **GitHub Repository**: [https://github.com/ashishh9090/customer-support-resolution-agent](https://github.com/ashishh9090/customer-support-resolution-agent)
 
 ---
