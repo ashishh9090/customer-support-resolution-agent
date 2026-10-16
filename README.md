@@ -2,6 +2,18 @@
 
 A production-style, stateful AI Customer Support Resolution Agent with **LangGraph** orchestration, strict refund safety policies, human supervisor approval checkpoints, tenant-isolated vector retrieval (RAG), and verified backend tool execution.
 
+[![GitHub Repo](https://img.shields.io/badge/GitHub-ashishh9090%2Fcustomer--support--resolution--agent-181717?style=flat&logo=github)](https://github.com/ashishh9090/customer-support-resolution-agent)
+[![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.111-009688.svg)](https://fastapi.tiangolo.com/)
+[![LangGraph](https://img.shields.io/badge/LangGraph-0.1.8-orange.svg)](https://langchain-ai.github.io/langgraph/)
+[![React 18](https://img.shields.io/badge/React-18.3-61DAFB.svg)](https://react.dev/)
+[![Tests](https://img.shields.io/badge/tests-29%20passed-brightgreen.svg)]()
+
+### Live Public Links
+- **Public Portal**: [https://bwsmp-2409-40d0-1002-ac5c-4cac-a6ff-654e-63b3.run.pinggy-free.link](https://bwsmp-2409-40d0-1002-ac5c-4cac-a6ff-654e-63b3.run.pinggy-free.link)
+- **Named Portal**: [https://cs-resolution-agent.loca.lt](https://cs-resolution-agent.loca.lt) *(Tunnel IP: `152.58.117.241`)*
+- **GitHub Repository**: [https://github.com/ashishh9090/customer-support-resolution-agent](https://github.com/ashishh9090/customer-support-resolution-agent)
+
 ---
 
 ## Architecture Overview
